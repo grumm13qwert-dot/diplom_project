@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <!-- 🔙 Назад -->
+    <a href="/products/" class="btn btn-secondary mb-3">← Назад</a>
+
+    <div class="row">
+
+        <!-- 🖼 Фото -->
+        <div class="col-md-5">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm">
+            {% endif %}
+        </div>
+
+        <!-- 📦 Информация -->
+        <div class="col-md-7">
+            <h2>{{ product.name }}</h2>
+            <p class="text-muted">{{ product.description }}</p>
+
+            <h4 class="text-primary">{{ product.price }} сум</h4>
+
+            <!-- 🛒 корзина -->
+<a href="/cart/add/{{ product.id }}/" class="btn btn-success mt-3 w-100">
+    Добавить в корзину
+</a>
+
+<!-- ❤️ избранное -->
+{% if user.is_authenticated %}
+
+    {% if is_favorite %}
+        <a href="/favorites/remove/{{ product.id }}/" class="btn btn-danger mt-2 w-100">
+            ❤️ Удалить из избранного
+        </a>
+    {% else %}
+        <a href="/favorites/add/{{ product.id }}/" class="btn btn-outline-danger mt-2 w-100">
+            🤍 В избранное
+        </a>
+    {% endif %}
+
+{% endif %}
+        </div>
+
+    </div>
+
+    <!-- 💬 Отзывы -->
+    <div class="mt-5">
+
+        <h4>Отзывы</h4>
+
+        {% for review in reviews %}
+            <div class="card mb-2 p-2">
+                <strong>{{ review.user.username }}</strong>
+                <p class="mb-1">{{ review.text }}</p>
+                <small class="text-muted">{{ review.created_at }}</small>
+            </div>
+        {% empty %}
+            <p>Пока нет отзывов</p>
+        {% endfor %}
+
+    </div>
+
+    <!-- ✍️ Форма -->
+    <div class="mt-4">
+
+        {% if user.is_authenticated %}
+            <form method="post" action="/reviews/add/{{ product.id }}/">
+                {% csrf_token %}
+                <textarea name="text" class="form-control mb-2" placeholder="Ваш отзыв..." required></textarea>
+                <button class="btn btn-primary">Оставить отзыв</button>
+            </form>
+        {% else %}
+            <p>
+                <a href="/users/login/">Войдите</a>, чтобы оставить отзыв
+            </p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}%}

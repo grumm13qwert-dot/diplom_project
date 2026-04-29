@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-5">  <!-- отступы слева/справа -->
+
+    <div class="row">
+
+        <!-- 📂 Категории -->
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <h5>Категории</h5>
+
+                <ul class="list-group list-group-flush">
+
+                    <!-- Все товары -->
+                    <a href="/products/" class="list-group-item list-group-item-action {% if not selected_category %}active{% endif %}">
+                        Все товары
+                    </a>
+
+                    {% for category in categories %}
+                        <a href="?category={{ category.id }}"
+                           class="list-group-item list-group-item-action {% if selected_category == category.id|stringformat:'s' %}active{% endif %}">
+                            {{ category.name }}
+                        </a>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+
+        <!-- 🛍 Товары -->
+        <div class="col-md-9">
+
+            <div class="row">
+
+                {% for product in products %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" class="card-img-top" style="height:220px; object-fit:cover;">
+                            {% endif %}
+
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <a href="{% url 'product_detail' product.id %}" class="text-decoration-none">
+                                        {{ product.name }}
+                                    </a>
+                                </h5>
+
+                                <p class="text-muted">{{ product.price }} сум</p>
+
+                                <a href="{% url 'product_detail' product.id %}" class="btn btn-primary btn-sm">
+                                    Подробнее
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>Нет товаров в этой категории</p>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

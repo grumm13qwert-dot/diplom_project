@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2 class="mb-4">🛒 Корзина</h2>
+
+    {% if items %}
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <table class="table align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Цена</th>
+                        <th>Количество</th>
+                        <th>Сумма</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for item in items %}
+                    <tr>
+
+                        <td>{{ item.product.name }}</td>
+
+                        <td>{{ item.product.price }} сум</td>
+
+                        <td>
+                            <div class="d-flex align-items-center">
+
+                                <a href="/cart/decrease/{{ item.id }}/" class="btn btn-sm btn-outline-secondary">-</a>
+
+                                <span class="mx-2">{{ item.quantity }}</span>
+
+                                <a href="/cart/increase/{{ item.id }}/" class="btn btn-sm btn-outline-secondary">+</a>
+
+                            </div>
+                        </td>
+
+                        <td>
+                            {{ item.product.price|floatformat:0|add:item.quantity }}
+                        </td>
+
+                        <td>
+                            <a href="/cart/remove/{{ item.id }}/" class="btn btn-danger btn-sm">
+                                удалить
+                            </a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            <hr>
+
+            <h4>💰 Итого: {{ total }} сум</h4>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+
+            <a href="/products/" class="btn btn-outline-primary">
+        ← Продолжить покупки
+            </a>
+
+            <a href="#" class="btn btn-success">
+        Оформить заказ
+            </a>
+
+          </div>
+        </div>
+    </div>
+
+    {% else %}
+
+        <div class="alert alert-info">
+            Корзина пуста 🛒
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

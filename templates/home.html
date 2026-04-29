@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+
+<!-- 🏆 Hero блок -->
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5 text-center">
+        <h1 class="display-5 fw-bold">Добро пожаловать в MyShop</h1>
+        <p class="col-md-8 fs-5 mx-auto">
+            Лучшие товары по доступным ценам
+        </p>
+        <a href="/products/" class="btn btn-primary btn-lg">
+            Перейти к товарам
+        </a>
+    </div>
+</div>
+
+<!-- 🛍 Товары -->
+<h2 class="mb-4">Популярные товары</h2>
+
+<div class="row">
+    {% for product in products %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+                {% endif %}
+
+                <div class="card-body text-center">
+                    <h5 class="card-title">
+                        <a href="{% url 'product_detail' product.id %}">
+                            {{ product.name }}
+                        </a>
+                    </h5>
+                    <p class="text-muted">{{ product.price }} сум</p>
+                </div>
+
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
