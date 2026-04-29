@@ -13,7 +13,7 @@
 
         <form method="post">
             {% csrf_token %}
-
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
             <input type="text" name="username" class="form-control mb-2" placeholder="Username" required>
             <input type="password" name="password" class="form-control mb-3" placeholder="Password" required>
 
